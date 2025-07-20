@@ -7,4 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 class Mission extends Model
 {
     protected $fillable = ['recruiter_id', 'title', 'description', 'location', 'salary_range', 'deadline', 'status'];
+
+    public function recruiter()
+    {
+        return $this->belongsTo(Recruiter::class);
+    }
+
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
+
+    public function acceptedApplication()
+    {
+        return $this->hasOne(Application::class)->where('status', 'accepted');
+    }
 }
