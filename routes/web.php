@@ -21,4 +21,4 @@ Route::get('/register/applicant', [AuthController::class, 'showRegisterApplicant
 Route::get('/register/recruiter', [AuthController::class, 'showRegisterRecruiter'])->name('show.register.recruiter');
 
 Route::post('/register/applicant', [AuthController::class, 'applicantRegister'])->name('register.applicant');
-
+Route::post('/register/recruiter',[AuthController::class, 'recruiterRegister'])->name('register.recruiter');
