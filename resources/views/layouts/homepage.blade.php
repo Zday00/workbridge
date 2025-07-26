@@ -724,7 +724,7 @@
                     <div class="testimonial-author">
                         <div class="author-avatar">F</div>
                         <div class="author-info">
-                            <h4>Fatou Sidibé</h4>
+                            <h4>Nabilatou Ado</h4>
                             <span>Marketing Specialist</span>
                         </div>
                     </div>
