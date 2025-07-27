@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Workbridge - Accueil</title>
+    <title>Accueil</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
 
     <style>
@@ -491,6 +491,226 @@
                 text-align: left;
             }
         }
+
+        /*Footer */
+        .footer {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 60px 0 0;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h4 {
+            color: #4169E1;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .footer-column h5 {
+            color: #4169E1;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            margin-top: 25px;
+            font-weight: 600;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo-img {
+            width: 40px;
+            height: auto;
+            border-radius: 6px;
+        }
+
+        .footer-logo h3 {
+            color: #4169E1;
+            font-size: 1.5rem;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .footer-description {
+            line-height: 1.6;
+            margin-bottom: 25px;
+            color: #bdc3c7;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background-color: #34495e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background-color: #4169E1;
+            transform: translateY(-3px);
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .footer-links a:hover {
+            color: #4169E1;
+        }
+
+        .contact-info p {
+            margin-bottom: 10px;
+            color: #bdc3c7;
+            font-size: 0.95rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid #34495e;
+            border-radius: 6px;
+            background-color: #34495e;
+            color: #ecf0f1;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .newsletter-input::placeholder {
+            color: #95a5a6;
+        }
+
+        .newsletter-input:focus {
+            border-color: #4169E1;
+        }
+
+        .newsletter-btn {
+            padding: 10px 15px;
+            background-color: #4169E1;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        .newsletter-btn:hover {
+            background-color: #365bb8;
+        }
+
+        .footer-divider {
+            height: 1px;
+            background-color: #34495e;
+            margin: 40px 0 30px;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-bottom-left p {
+            margin: 0;
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom-right {
+            display: flex;
+            gap: 25px;
+        }
+
+        .footer-bottom-right a {
+            color: #95a5a6;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom-right a:hover {
+            color: #4169E1;
+        }
+
+        /* Responsive Footer */
+        @media (max-width: 768px) {
+            .footer {
+                padding: 40px 0 0;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .footer-bottom-right {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .newsletter-btn {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 
@@ -680,7 +900,7 @@
                     <div class="testimonial-author">
                         <div class="author-avatar">A</div>
                         <div class="author-info">
-                            <h4>Aminata Diallo</h4>
+                            <h4>Nana.Z Abdouraouf </h4>
                             <span>Développeuse Web</span>
                         </div>
                     </div>
@@ -732,6 +952,87 @@
             </div>
         </div>
     </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- Section principale du footer -->
+            <div class="footer-content">
+                <!-- Colonne 1 - Logo et description -->
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <img src="{{ asset('images/logo-workbridge.png') }}" alt="Logo Workbridge"
+                            class="footer-logo-img" />
+                        <h3>Workbridge</h3>
+                    </div>
+                    <p class="footer-description">
+                        La plateforme qui connecte les talents aux opportunités. Trouvez l'emploi qui vous révèle.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">📘</a>
+                        <a href="#" class="social-link">🐦</a>
+                        <a href="#" class="social-link">💼</a>
+                        <a href="#" class="social-link">📷</a>
+                    </div>
+                </div>
+
+                <!-- Colonne 2 - Liens rapides -->
+                <div class="footer-column">
+                    <h4>Liens rapides</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Accueil</a></li>
+                        <li><a href="#">Offres d'emploi</a></li>
+                        <li><a href="#">Entreprises</a></li>
+                        <li><a href="#">Candidats</a></li>
+                        <li><a href="#">À propos</a></li>
+                    </ul>
+                </div>
+
+                <!-- Colonne 3 - Catégories -->
+                <div class="footer-column">
+                    <h4>Catégories</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Informatique</a></li>
+                        <li><a href="#">Santé</a></li>
+                        <li><a href="#">Éducation</a></li>
+                        <li><a href="#">Finance</a></li>
+                        <li><a href="#">Commerce</a></li>
+                    </ul>
+                </div>
+
+                <!-- Colonne 4 - Contact -->
+                <div class="footer-column">
+                    <h4>Contact</h4>
+                    <div class="contact-info">
+                        <p>📧 contact@workbridge.ne</p>
+                        <p>📞 +227 20 XX XX XX</p>
+                        <p>📍 Niamey, Niger</p>
+                    </div>
+                    <div class="newsletter">
+                        <h5>Newsletter</h5>
+                        <div class="newsletter-form">
+                            <input type="email" placeholder="Votre email" class="newsletter-input">
+                            <button class="newsletter-btn">S'abonner</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ligne de séparation -->
+            <div class="footer-divider"></div>
+
+            <!-- Section copyright -->
+            <div class="footer-bottom">
+                <div class="footer-bottom-left">
+                    <p>&copy; 2025 Workbridge. Tous droits réservés.</p>
+                </div>
+                <div class="footer-bottom-right">
+                    <a href="#">Politique de confidentialité</a>
+                    <a href="#">Conditions d'utilisation</a>
+                    <a href="#">Mentions légales</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 
 </body>
