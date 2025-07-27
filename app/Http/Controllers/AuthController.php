@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
+
 use App\Models\User;
 use App\Models\Candidate;
 class AuthController extends Controller
@@ -107,6 +109,17 @@ class AuthController extends Controller
         'password' => Hash::make($validatedData['password']),
         'role' => 'recruteur',
     ]);
+
+    $randomOtp = random_int(100000, 999999);
+    $otpExpiration = now()->addMinutes(10);
+
+    EmailOtp::create([
+        'user_id'=>$user->id,
+        'otp_code'=>$randomOtp,
+        'expires_at'=>$otpExpiration,
+        'verified_at' => null,
+    ]);
+
 
     $user->recruiter()->create([
         'company_name' => $validatedData['company_name'],
