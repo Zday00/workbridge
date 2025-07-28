@@ -33,3 +33,5 @@ Route::post('/verify-email', [AuthController::class, 'VerifyOtp'])->name('verifi
 //Renvoi de code OTP en cas d'echec
 Route::get('/resend-otp', [AuthController::class, 'ResendOtp'])->name('verification.resend');
 
+// Affichage du formulaire OTP
+Route::get('/verify-otp', [AuthController::class, 'showOtpForm' ])->name('verify.otp.form');
