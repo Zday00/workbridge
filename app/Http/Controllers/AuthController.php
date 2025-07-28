@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use App\Mail\VerificationCodeMail;
+use App\Models\EmailOtp;
+
 use Illuminate\Support\Facades\Mail;
 
 use App\Models\User;
@@ -83,9 +85,8 @@ class AuthController extends Controller
         'skills' => $validatedData['skills'],
     ]);
 
-    return view('welcome', [
+    return view('auth.verify_otp', [
         'user' => $user,
-        'message' => 'Votre compte candidat a été créé avec succès !'
     ]);
 }
 
@@ -142,17 +143,38 @@ class AuthController extends Controller
         'website' => $validatedData['website'],
     ]);
 
-    return view('welcome', [
+    return view('auth.verify_otp', [
         'user' => $user,
-        'message' => 'Votre compte recruteur a été créé avec succès !'
-    ]);
+        ]);
 } 
+    public function VerifyOtp(Request $request){
+        $request->validate([
+        'otp_code' => 'required|digits:6',
+        'email' => 'required|email',
+    ]);
 
-    public function showOtpForm(){
-      return view("auth.verify_otp");
+    // Recherche de l'OTP valide
+    $otp = EmailOtp::where('email', $request->email)
+                ->where('otp_code', $request->otp_code)
+                ->whereNull('verified_at') // éviter réutilisation
+                ->where('expires_at', '>', now())
+                ->first();
+
+    if (!$otp) {
+        return back()->withErrors(['otp_code' => 'Code invalide ou expiré.']);
     }
 
+    // Marquer l'OTP comme utilisé
+    $otp->verified_at = now();
+    $otp->save();
 
+    // Vérifier l'email de l'utilisateur
+    $user = User::where('email', $request->email)->first();
+    $user->email_verified_at = now();
+    $user->save();
 
+    // Rediriger ou authentifier
+    return redirect()->route('/')->with('success', 'Email vérifié avec succès.');
+        }
 
 }
