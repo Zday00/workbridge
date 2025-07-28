@@ -125,7 +125,7 @@ class AuthController extends Controller
     ]);
 
     $randomOtp = random_int(100000, 999999);
-    $otpExpiration = now()->addMinutes(10);
+    $otpExpiration = now()->addMinutes(120);
 
     EmailOtp::create([
         'user_id'=>$user->id,
