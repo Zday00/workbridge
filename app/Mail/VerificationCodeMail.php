@@ -26,6 +26,7 @@ class VerificationCodeMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            from : 'workbridge.noreply00@gmail.com',
             subject: 'Verification Code Mail',
         );
     }
@@ -37,7 +38,8 @@ class VerificationCodeMail extends Mailable
     {
         return new Content(
             view: 'emails.verification_code',
-        );
+            with: [
+                'otpCode' => $this->otpCode]);
     }
 
     /**
