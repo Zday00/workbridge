@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use App\Mail\VerificationCodeMail;
+use Illuminate\Support\Facades\Mail;
 
 use App\Models\User;
 use App\Models\Candidate;
@@ -64,6 +66,17 @@ class AuthController extends Controller
         'role' => 'candidat',
     ]);
 
+    $randomOtp = random_int(100000, 999999);
+    $otpExpiration = now()->addMinutes(10);
+
+    EmailOtp::create([
+        'user_id'=>$user->id,
+        'otp_code'=>$randomOtp,
+        'expires_at'=>$otpExpiration,
+        'verified_at' => null,
+    ]);
+    Mail::to($user->email)->send(new VerificationCodeMail($randomOtp));
+
     $user->candidate()->create([
         'cv_path' => $cvPath,
         'bio' => $validatedData['biography'],
@@ -119,6 +132,8 @@ class AuthController extends Controller
         'expires_at'=>$otpExpiration,
         'verified_at' => null,
     ]);
+    Mail::to($user->email)->send(new VerificationCodeMail($randomOtp));
+
 
 
     $user->recruiter()->create([
@@ -132,6 +147,10 @@ class AuthController extends Controller
         'message' => 'Votre compte recruteur a été créé avec succès !'
     ]);
 } 
+
+    public function showOtpForm(){
+      return view("auth.verify_otp");
+    }
 
 
 
