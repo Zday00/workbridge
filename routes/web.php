@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
+use App\Mail\VerificationCodeMail;
 
  use Illuminate\Support\Facades\Mail;
 Route::get(uri: '/', action: function () {
@@ -33,17 +34,7 @@ Route::post('/verify-email', [AuthController::class, 'VerifyOtp'])->name('verifi
 //Renvoi de code OTP en cas d'echec
 Route::get('/resend-otp', [AuthController::class, 'ResendOtp'])->name('verification.resend');
 
-//route temp
-use App\Mail\VerificationCodeMail;
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
 
-Route::get('/test-email', function () {
-    try {
-        $reponse = Mail::to('ggol71884@gmail.com')->send(new VerificationCodeMail(123456));
-        Log::info("Reponse mail",[$reponse]);
-        return 'Email envoyé avec succès !';
-    } catch (\Exception $e) {
-        return 'Erreur : ' . $e->getMessage();
-    }
-});
 
 
