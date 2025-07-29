@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Mail\VerificationCodeMail;
 use App\Models\EmailOtp;
@@ -154,6 +155,7 @@ $email = $user->email;
         $request->validate([
         'otp_code' => 'required|digits:6',
         'email' => 'required|email',
+    
     ]);
 
     // Recherche de l'OTP valide
@@ -175,10 +177,10 @@ $email = $user->email;
     $user = User::where('email', $request->email)->first();
     $user->email_verified_at = now();
     $user->save();
+    Auth::login($user);
 
-    // Rediriger ou authentifier
-    return redirect('/')->with('success', 'Email vérifié avec succès.');
-
+    // Rediriger
+         return redirect('/dashboard');
         }
 
 }
