@@ -69,11 +69,13 @@ class AuthController extends Controller
     ]);
 
     $randomOtp = random_int(100000, 999999);
-    $otpExpiration = now()->addMinutes(10);
+    $otpExpiration = now()->addMinutes(120);
 
+    $email = $user->email;
     EmailOtp::create([
         'user_id'=>$user->id,
         'otp_code'=>$randomOtp,
+        'email'=>$email,
         'expires_at'=>$otpExpiration,
         'verified_at' => null,
     ]);
@@ -126,10 +128,11 @@ class AuthController extends Controller
 
     $randomOtp = random_int(100000, 999999);
     $otpExpiration = now()->addMinutes(120);
-
+$email = $user->email;
     EmailOtp::create([
         'user_id'=>$user->id,
         'otp_code'=>$randomOtp,
+        'email'=>$email,
         'expires_at'=>$otpExpiration,
         'verified_at' => null,
     ]);
@@ -174,7 +177,8 @@ class AuthController extends Controller
     $user->save();
 
     // Rediriger ou authentifier
-    return redirect()->route('/')->with('success', 'Email vérifié avec succès.');
+    return redirect('/')->with('success', 'Email vérifié avec succès.');
+
         }
 
 }
