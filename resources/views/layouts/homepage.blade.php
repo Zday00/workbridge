@@ -726,7 +726,7 @@
         </div>
 
         <div class="auth-buttons">
-            <a href="#" class="btn-inscription">S'inscrire</a>
+            <a href="{{ route('show.register.choice') }}" class="btn-inscription">S'inscrire</a>
             <a href="#" class="btn-connexion">Se connecter</a>
         </div>
     </header>
