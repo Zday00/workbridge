@@ -32,4 +32,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(emailOtp::class);
     }
+
+    public function isRecruiter(){
+        return $this->role === 'recruiteur';
+    }
+
+    public function isCandidate(){
+        return $this->role === 'candidat';
+    }
 }
