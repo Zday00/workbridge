@@ -34,7 +34,10 @@ Route::post('/verify-email', [AuthController::class, 'VerifyOtp'])->name('verifi
 //Renvoi de code OTP en cas d'echec
 Route::get('/resend-otp', [AuthController::class, 'ResendOtp'])->name('verification.resend');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
+//Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
 
 
 
+Route::get(uri: '/menu', action: function () {
+    return view(view: 'dashboard.partials.menu');
+})->name('menu');
