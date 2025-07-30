@@ -50,7 +50,7 @@ class AuthController extends Controller
         'last_name' => 'required|string|min:2|max:25',
         'email' => 'required|string|email|unique:users,email',
         'cv' => 'required|file|mimes:pdf,doc,docx|max:2048',
-        'biography' => 'required|string|min:20|max:300',
+        'biography' => 'required|string|min:10|max:300',
         'skills' => 'required|array|min:2|max:3',
         'skills.0' => 'required|string|max:100',  
         'skills.1' => 'required|string|max:100',   
