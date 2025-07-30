@@ -180,7 +180,7 @@ $email = $user->email;
     Auth::login($user);
 
     // Rediriger
-         return redirect('/dashboard');
+         return redirect()->route('menu');
         }
 
 }
