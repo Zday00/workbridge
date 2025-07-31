@@ -17,6 +17,9 @@ use App\Models\User;
 use App\Models\Candidate;
 class AuthController extends Controller
 {
+
+    
+
     public function showRegisterChoice()
     {
         return view("auth.register_choice");
@@ -28,7 +31,7 @@ class AuthController extends Controller
         return view("auth.register_recruiter");
     }
     public function applicantRegister(Request $request)
-{
+    {
     $messages = [
         'first_name.required' => 'Le prénom est obligatoire',
         'last_name.required' => 'Le nom est obligatoire',
@@ -69,19 +72,8 @@ class AuthController extends Controller
         'role' => 'candidat',
     ]);
 
-    $randomOtp = random_int(100000, 999999);
-    $otpExpiration = now()->addMinutes(120);
-
-    $email = $user->email;
-    EmailOtp::create([
-        'user_id'=>$user->id,
-        'otp_code'=>$randomOtp,
-        'email'=>$email,
-        'expires_at'=>$otpExpiration,
-        'verified_at' => null,
-    ]);
-    Mail::to($user->email)->send(new VerificationCodeMail($randomOtp));
-
+    $this->generateOtp($user);
+    
     $user->candidate()->create([
         'cv_path' => $cvPath,
         'bio' => $validatedData['biography'],
@@ -126,20 +118,7 @@ class AuthController extends Controller
         'password' => Hash::make($validatedData['password']),
         'role' => 'recruteur',
     ]);
-
-    $randomOtp = random_int(100000, 999999);
-    $otpExpiration = now()->addMinutes(120);
-$email = $user->email;
-    EmailOtp::create([
-        'user_id'=>$user->id,
-        'otp_code'=>$randomOtp,
-        'email'=>$email,
-        'expires_at'=>$otpExpiration,
-        'verified_at' => null,
-    ]);
-    Mail::to($user->email)->send(new VerificationCodeMail($randomOtp));
-
-
+        $this->generateOtp($user);
 
     $user->recruiter()->create([
         'company_name' => $validatedData['company_name'],
@@ -155,6 +134,8 @@ $email = $user->email;
         $request->validate([
         'otp_code' => 'required|digits:6',
         'email' => 'required|email',
+        
+
     
     ]);
 
@@ -178,9 +159,20 @@ $email = $user->email;
     $user->email_verified_at = now();
     $user->save();
     Auth::login($user);
+    return redirect()->route('menu');
+    }
+    private function generateOtp($user){
+        $randomOtp = random_int(100000, 999999);
+        $otpExpiration = now()->addMinutes(120);
+        EmailOtp::create([
+                'user_id'=>$user->id,
+                'otp_code'=>$randomOtp,
+                'email'=>$user->email,
+                'expires_at'=>$otpExpiration,
+                'verified_at' => null,
+    ]);
+    Mail::to($user->email)->send(new VerificationCodeMail($randomOtp));
 
-    // Rediriger
-         return redirect()->route('menu');
         }
 
 }
