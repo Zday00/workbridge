@@ -175,4 +175,13 @@ class AuthController extends Controller
 
         }
 
+    // Login
+        public function showLoginForm(){
+            return view("auth.login");
+        }
+        public function verifyForm(Request $request){
+             $messages = [
+        'email.unique' => 'Cet email est déjà utilisé',
+        'email.email' => 'Format email invalide'];
+        }
 }
