@@ -33,11 +33,11 @@ class User extends Authenticatable
         return $this->hasMany(emailOtp::class);
     }
 
-    public function isRecruiter(){
-        return $this->role === 'recruiteur';
+    public function hasRecruteurRole(){
+        return $this->role === 'recruteur';
     }
 
-    public function isCandidate(){
+    public function hasCandidateRole(){
         return $this->role === 'candidat';
     }
 }
