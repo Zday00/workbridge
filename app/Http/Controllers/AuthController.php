@@ -118,7 +118,13 @@ class AuthController extends Controller
         'password' => Hash::make($validatedData['password']),
         'role' => 'recruteur',
     ]);
+    if(!$user){
+        return('Erreur de création');
+    }
+    else
         $this->generateOtp($user);
+    
+    
 
     $user->recruiter()->create([
         'company_name' => $validatedData['company_name'],
@@ -200,4 +206,11 @@ class AuthController extends Controller
                 'email' => 'Les identifiants sont incorrects.',
             ])->withInput();
         }
+
+    public function logout(Request $request){
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
+    }
 }
