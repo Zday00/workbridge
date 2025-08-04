@@ -18,7 +18,7 @@ Route::get('/register', [AuthController::class, 'showRegisterChoice'])->name('sh
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'verifyForm'])->name('verify.login');
-
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/register/applicant', [AuthController::class, 'showRegisterApplicant'])->name('show.register.applicant');
 Route::get('/register/recruiter', [AuthController::class, 'showRegisterRecruiter'])->name('show.register.recruiter');
@@ -43,3 +43,7 @@ Route::get('/resend-otp', [AuthController::class, 'ResendOtp'])->name('verificat
 Route::get('/menu', function () {
     return view('dashboard.partials.menu');
 })->middleware('auth')->name('menu');
+
+Route::get('/index', function () {
+    return view('dashboard.index');
+})->middleware('auth')->name('index');
