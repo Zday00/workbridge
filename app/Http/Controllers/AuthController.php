@@ -179,9 +179,25 @@ class AuthController extends Controller
         public function showLoginForm(){
             return view("auth.login");
         }
-        public function verifyForm(Request $request){
-             $messages = [
-        'email.unique' => 'Cet email est déjà utilisé',
-        'email.email' => 'Format email invalide'];
+        public function verifyForm(Request $request)
+{
+            $credentials = $request->validate([
+                'email' => 'required|email',
+                'password' => 'required|string|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+            ], [
+                'email.required' => 'L\'adresse e-mail est obligatoire',
+                'email.email' => 'Format email invalide',
+                'password.required' => 'Le mot de passe est obligatoire',
+                'password.regex' => 'Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule et un chiffre.',
+            ]);
+
+            if (Auth::attempt($credentials)) {
+                $request->session()->regenerate();
+                return redirect()->intended('/menu');
+            }
+
+            return back()->withErrors([
+                'email' => 'Les identifiants sont incorrects.',
+            ])->withInput();
         }
 }
