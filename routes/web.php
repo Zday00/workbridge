@@ -6,16 +6,18 @@ use Illuminate\Support\Facades\Route;
 use App\Mail\VerificationCodeMail;
 
  use Illuminate\Support\Facades\Mail;
-Route::get(uri: '/', action: function () {
-    return view(view: 'layouts/homepage');
-});
+Route::get('/', function () {
+    return view('layouts.homepage');  
+})->name('homepage'); 
+
 
 // Séparation des routes en fonctions des rôles 
 
 // Inscription
 Route::get('/register', [AuthController::class, 'showRegisterChoice'])->name('show.register.choice');
 
-
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'verifyForm'])->name('verify.login');
 
 
 Route::get('/register/applicant', [AuthController::class, 'showRegisterApplicant'])->name('show.register.applicant');
@@ -38,6 +40,6 @@ Route::get('/resend-otp', [AuthController::class, 'ResendOtp'])->name('verificat
 
 
 
-Route::get(uri: '/menu', action: function () {
-    return view(view: 'dashboard.partials.menu');
-})->name('menu');
+Route::get('/menu', function () {
+    return view('dashboard.partials.menu');
+})->middleware('auth')->name('menu');
