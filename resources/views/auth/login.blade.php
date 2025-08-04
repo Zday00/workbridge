@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <title>Formulaire de connexion</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
@@ -114,8 +115,8 @@
 
         .forgot-password {
             text-align: right;
-            margin-top: 5px;
-            margin-bottom: 5px;
+            margin-top: 15px;
+            margin-bottom: 15px;
         }
 
         .forgot-password a {
@@ -140,14 +141,27 @@
                     <h2>Bon retour parmi nous !</h2>
                     <h4>Veuillez vous connecter en utilisant votre e-mail et votre mot de passe.</h4>
                 </div>
-                <div class="form">
-                    <input type="email" class="form-field" placeholder="Email">
-                    <input type="password" class="form-field" placeholder="Mot de passe">
+                <form action="{{ route('verify.login') }}" method="POST" class="form">
+                    @csrf
+                    {{-- Email --}}
+                    <input type="email" class="form-field" placeholder="Email" name="email"
+                        value="{{ old('email') }}">
+                    @error('email')
+                        <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                    @enderror
+
+                    {{-- Mot de passe --}}
+                    <input type="password" class="form-field" name="password" placeholder="Mot de passe" required>
+                    @error('password')
+                        <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                    @enderror
+
                     <div class="forgot-password">
                         <p><a href="#">Mot de passe oublié ?</a></p>
                     </div>
-                    <button>Se connecter</button>
-                </div>
+
+                    <button type="submit">Se connecter</button>
+                </form>
             </div>
             <div class="right"></div>
         </div>
