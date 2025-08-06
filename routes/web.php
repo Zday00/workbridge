@@ -4,7 +4,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
 use App\Mail\VerificationCodeMail;
-
+use App\Http\Controllers\RecruiterMissionController;
  use Illuminate\Support\Facades\Mail;
 Route::get('/', function () {
     return view('layouts.homepage');  
@@ -47,3 +47,9 @@ Route::get('/menu', function () {
 Route::get('/index', function () {
     return view('dashboard.index');
 })->middleware('auth')->name('index');
+
+
+// CRUD RECRUTEUR
+//créer une mission
+Route::get('/recruiter/create',[RecruiterMissionController::class, 'create'])->name('recruiter.create');
+Route::post('/recruiter/store',[RecruiterMissionController::class, 'store'])->name('recruiter.store');
