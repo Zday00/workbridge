@@ -6,7 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Mission extends Model
 {
-    protected $fillable = ['recruiter_id', 'title', 'description', 'location', 'salary_range', 'deadline', 'status'];
+protected $fillable = [
+    'recruiter_id',
+    'category_id',
+    'title',
+    'description',
+    'location',
+    'salary_range',
+    'deadline',
+    'status',
+];
 
     public function recruiter()
     {
@@ -21,5 +30,10 @@ class Mission extends Model
     public function acceptedApplication()
     {
         return $this->hasOne(Application::class)->where('status', 'accepted');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }
