@@ -1,32 +1,43 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Recruiter;
+
 use App\Models\Category;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Mission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class RecruiterMissionController extends Controller
 {
-    public function create(){
+    public function index(){
+        $user = Auth::user();
+
+        $recruiter = Recruiter::where('user_id', $user->id)->first();
+
+        $missions = Mission::where('recruiter_id', $recruiter->id)->get();
+
+        return view('dashboard.recruiter.index', compact('missions'));
+
+    }
+
+
+    public function create()
+    {
         $categories = Category::all();
-        return view('recruiter.create', compact('categories'));
+        return view('dashboard.recruiter.create', compact('categories'));
     }
 
     public function store(Request $request)
     {
-        // Debug: Afficher les données reçues
-        \Log::info('Données reçues:', $request->all());
-        
-        // Vérifier d'abord si l'utilisateur a un profil recruiter
         if (!Auth::user() || !Auth::user()->recruiter) {
             return redirect()->route('recruiter.create')
                 ->with('error', 'Vous devez avoir un profil recruteur pour créer une mission.')
                 ->withInput();
         }
 
-        // Validation manuelle pour un meilleur contrôle
-        $validator = \Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'location' => 'required|string|max:255',
@@ -55,31 +66,18 @@ class RecruiterMissionController extends Controller
             'category_id.exists' => 'La catégorie sélectionnée n\'existe pas.',
         ]);
 
-        // Si la validation échoue
         if ($validator->fails()) {
-            \Log::info('Erreurs de validation:', $validator->errors()->toArray());
-            return redirect()->route('recruiter.create')
+            return redirect()->route('recruiter.index')
                 ->withErrors($validator)
                 ->withInput()
                 ->with('validation_failed', true);
         }
 
-        try {
-            $validated = $validator->validated();
-            $recruiterId = Auth::user()->recruiter->id;
-            $validated['recruiter_id'] = $recruiterId;
+        $validated = $validator->validated();
+        $validated['recruiter_id'] = Auth::user()->recruiter->id;
 
-            \Log::info('Création de mission avec:', $validated);
-            
-            Mission::create($validated);
-            
-            return redirect()->route('menu')->with('success', 'Mission créée avec succès.');
-            
-        } catch (\Exception $e) {
-            \Log::error('Erreur lors de la création:', ['error' => $e->getMessage()]);
-            return redirect()->route('recruiter.create')
-                ->with('error', 'Une erreur est survenue lors de la création de la mission: ' . $e->getMessage())
-                ->withInput();
-        }
+        Mission::create($validated);
+
+        return redirect()->route('recruiter.index')->with('success', 'Mission créée avec succès.');
     }
 }
