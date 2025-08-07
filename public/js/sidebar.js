@@ -38,15 +38,15 @@ document
 if (window.innerWidth <= 1024)
     document.querySelector(".sidebar").classList.add("collapsed");
 
-document.querySelectorAll(".nav-link").forEach((link) => {
-    link.addEventListener("click", function (e) {
-        e.preventDefault();
-        const url = this.dataset.url;
+// document.querySelectorAll(".nav-link").forEach((link) => {
+//     link.addEventListener("click", function (e) {
+//         e.preventDefault();
+//         const url = this.dataset.url;
 
-        fetch(url)
-            .then((res) => res.text())
-            .then((html) => {
-                document.getElementById("main-content").innerHTML = html;
-            });
-    });
-});
+//         fetch(url)
+//             .then((res) => res.text())
+//             .then((html) => {
+//                 document.getElementById("main-content").innerHTML = html;
+//             });
+//     });
+// });
