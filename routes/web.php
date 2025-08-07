@@ -41,15 +41,18 @@ Route::get('/resend-otp', [AuthController::class, 'ResendOtp'])->name('verificat
 
 
 Route::get('/menu', function () {
-    return view('dashboard.partials.menu');
+    return view('dashboard.layouts.app');
 })->middleware('auth')->name('menu');
 
 Route::get('/index', function () {
-    return view('dashboard.index');
+    return view('dashboard.layouts.app');
 })->middleware('auth')->name('index');
 
 
 // CRUD RECRUTEUR
+
+Route::get('/recruiter/index', [RecruiterMissionController::class, 'index'])->middleware('auth')->name('recruiter.index');
+
 //créer une mission
 Route::get('/recruiter/create',[RecruiterMissionController::class, 'create'])->name('recruiter.create');
 Route::post('/recruiter/store',[RecruiterMissionController::class, 'store'])->name('recruiter.store');
