@@ -67,7 +67,7 @@ class RecruiterMissionController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('recruiter.index')
+            return redirect()->route('recruiter.create')
                 ->withErrors($validator)
                 ->withInput()
                 ->with('validation_failed', true);
