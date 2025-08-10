@@ -330,9 +330,9 @@
                                     </span>
                                     <span class="{{ $isUrgent ? 'deadline-urgent' : 'deadline-normal' }}">
                                         @if ($deadline->isPast())
-                                            Échue il y a {{ $deadline->diffForHumans() }}
+                                            Date limite dépassée il y a {{ $deadline->locale('fr')->diffForHumans() }}
                                         @else
-                                            Dans {{ $deadline->diffForHumans() }}
+                                            {{ $deadline->locale('fr')->diffForHumans() }}
                                         @endif
                                     </span>
                                 @endif
