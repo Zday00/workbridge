@@ -57,5 +57,6 @@ Route::middleware('auth')->prefix('recruiter')->name('recruiter.')->group(functi
     Route::post('/store', [RecruiterMissionController::class, 'store'])->name('store');
     Route::delete('/missions/{mission}', [RecruiterMissionController::class, 'destroy'])->name('destroy');
     Route::get('/missions/{mission}/edit', [RecruiterMissionController::class, 'edit'])->name('edit');
+        Route::get('/missions/{mission}', [RecruiterMissionController::class, 'show'])->name('show');
     Route::put('missions/{mission}', [RecruiterMissionController::class, 'update'])->name('update');
 });
