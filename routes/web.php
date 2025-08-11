@@ -51,8 +51,11 @@ Route::get('/index', function () {
 
 // CRUD RECRUTEUR
 
-Route::get('/recruiter/index', [RecruiterMissionController::class, 'index'])->middleware('auth')->name('recruiter.index');
-
-//créer une mission
-Route::get('/recruiter/create',[RecruiterMissionController::class, 'create'])->name('recruiter.create');
-Route::post('/recruiter/store',[RecruiterMissionController::class, 'store'])->name('recruiter.store');
+Route::middleware('auth')->prefix('recruiter')->name('recruiter.')->group(function () {
+    Route::get('/index', [RecruiterMissionController::class, 'index'])->name('index');
+    Route::get('/create', [RecruiterMissionController::class, 'create'])->name('create');
+    Route::post('/store', [RecruiterMissionController::class, 'store'])->name('store');
+    Route::delete('/missions/{mission}', [RecruiterMissionController::class, 'destroy'])->name('destroy');
+    Route::get('/missions/{mission}/edit', [RecruiterMissionController::class, 'edit'])->name('edit');
+    Route::put('missions/{mission}', [RecruiterMissionController::class, 'update'])->name('update');
+});
