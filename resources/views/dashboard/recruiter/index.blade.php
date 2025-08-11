@@ -76,6 +76,17 @@
             overflow: hidden;
         }
 
+        .delete-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #dc2626;
+            font-size: 1.5rem;
+        }
+
         .mission-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
@@ -263,6 +274,12 @@
             }
         }
     </style>
+    @if (session('success'))
+        <div class="alert-success"
+            style="background-color: #d1fae5; color: #065f46; padding: 12px; border-radius: 6px; margin-bottom: 20px; text-align: center;">
+            {{ session('success') }}
+        </div>
+    @endif
 
     <div class="missions-container">
         <div class="page-header">
@@ -297,6 +314,18 @@
             <div class="missions-grid">
                 @foreach ($missions as $mission)
                     <div class="mission-card">
+                        <!-- Bouton suppression en haut à droite -->
+                        <form action="{{ route('recruiter.destroy', $mission->id) }}" method="POST"
+                            style="position: absolute; top: 16px; right: 16px;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                style="background: transparent; border: none; cursor: pointer; color: #dc2626; font-size: 1.5rem;"
+                                title="Supprimer la mission">
+                                <span class="material-symbols-rounded">delete</span>
+                            </button>
+                        </form>
+
                         <h3 class="mission-title">{{ $mission->title }}</h3>
 
                         <p class="mission-description">
