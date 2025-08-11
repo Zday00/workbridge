@@ -22,6 +22,8 @@ class RecruiterMissionController extends Controller
 
     }
 
+    
+
 
     public function create()
     {
@@ -96,4 +98,51 @@ class RecruiterMissionController extends Controller
     
         return view('dashboard.recruiter.edit', compact('mission'));
     }
+
+    public function update(Request $request, Mission $mission)
+{
+    if (auth()->id() !== $mission->recruiter->user_id) {
+        abort(403, "Action non autorisée");
+    }
+
+    $mission->update($request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'location' => 'required|string|max:255',
+        'salary_range' => 'required|string|max:100',
+        'deadline' => 'required|date|after:today',
+        'status' => 'required|in:open,closed,paused,filled,expired',
+        'category' => 'required|in:informatique,marketing,education,sante,ingenierie,finance,art_design,droit'
+    ], [
+        // Messages d'erreur personnalisés
+        'title.required' => 'Le titre est obligatoire.',
+        'title.max' => 'Le titre ne peut pas dépasser 255 caractères.',
+        'description.required' => 'La description est obligatoire.',
+        'location.required' => 'Le lieu est obligatoire.',
+        'location.max' => 'Le lieu ne peut pas dépasser 255 caractères.',
+        'salary_range.required' => 'La fourchette salariale est obligatoire.',
+        'salary_range.max' => 'La fourchette salariale ne peut pas dépasser 100 caractères.',
+        'deadline.required' => 'La date limite est obligatoire.',
+        'deadline.date' => 'La date limite doit être une date valide.',
+        'deadline.after' => 'La date limite doit être dans le futur.',
+        'status.required' => 'Le statut est obligatoire.',
+        'status.in' => 'Le statut sélectionné n\'est pas valide.',
+        'category.required' => 'La catégorie est obligatoire.',
+        'category.in' => 'La catégorie sélectionnée n\'est pas valide.',
+    ]));
+
+    return redirect()->route('recruiter.index')
+        ->with('success', 'Mission mise à jour avec succès !');
+}
+
+    public function show(Mission $mission)  {  
+  
+        
+        if (auth()->user()->id !== $mission->recruiter->user_id) {
+            abort(403, 'Accès non autorisé.');
+        }
+
+        return view('dashboard.recruiter.show', compact('mission'));
+    }
+
 }
