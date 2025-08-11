@@ -80,4 +80,20 @@ class RecruiterMissionController extends Controller
 
         return redirect()->route('recruiter.index')->with('success', 'Mission créée avec succès.');
     }
+
+    public function destroy(Mission $mission){
+        if (auth()->id() !== $mission->recruiter->user_id) {
+                abort(403, "Action non autorisée");
+        }
+        $mission->delete();
+        return redirect()->route('recruiter.index')->with('success', 'Mission supprimée avec succès.');
+    }
+
+    public function edit(Mission $mission){
+        if (auth()->id() !== $mission->recruiter->user_id) {
+            abort(403, "Action non autorisée");
+        }
+    
+        return view('dashboard.recruiter.edit', compact('mission'));
+    }
 }
