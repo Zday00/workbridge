@@ -390,11 +390,11 @@
                                 </div>
 
                                 <div class="mission-actions">
-                                    <a href="#" class="action-btn btn-primary">
+                                    <a href="{{ route('recruiter.show', $mission->id) }}" class="action-btn btn-primary">
                                         <span class="material-symbols-rounded" style="font-size: 1rem;">visibility</span>
                                         Voir
                                     </a>
-                                    <a href="#" class="action-btn btn-secondary">
+                                    <a href="{{ route('recruiter.edit', $mission->id) }}" class="action-btn btn-secondary">
                                         <span class="material-symbols-rounded" style="font-size: 1rem;">edit</span>
                                         Modifier
                                     </a>
