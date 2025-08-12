@@ -57,6 +57,12 @@ Route::middleware('auth')->prefix('recruiter')->name('recruiter.')->group(functi
     Route::post('/store', [RecruiterMissionController::class, 'store'])->name('store');
     Route::delete('/missions/{mission}', [RecruiterMissionController::class, 'destroy'])->name('destroy');
     Route::get('/missions/{mission}/edit', [RecruiterMissionController::class, 'edit'])->name('edit');
-        Route::get('/missions/{mission}', [RecruiterMissionController::class, 'show'])->name('show');
+    Route::get('/missions/{mission}', [RecruiterMissionController::class, 'show'])->name('show');
     Route::put('missions/{mission}', [RecruiterMissionController::class, 'update'])->name('update');
+    Route::get('/archived', [RecruiterMissionController::class, 'archived'])->name('archived');
+    
+    Route::get('/company-info', [RecruiterMissionController::class, 'showCompanyInfo'])->name('company.info');
+    Route::get('/company-info/edit', [RecruiterMissionController::class, 'editCompanyInfo'])->name('company.edit');
+    Route::put('/company-info', [RecruiterMissionController::class, 'updateCompanyInfo'])->name('company.update');
 });
+
