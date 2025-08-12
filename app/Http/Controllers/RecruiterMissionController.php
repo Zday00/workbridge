@@ -16,13 +16,27 @@ class RecruiterMissionController extends Controller
 
         $recruiter = Recruiter::where('user_id', $user->id)->first();
 
-        $missions = Mission::where('recruiter_id', $recruiter->id)->get();
-
+        $missions = Mission::where('recruiter_id', $recruiter->id)
+         ->whereNotIn('status', ['filled', 'expired']) ->get();
+       
         return view('dashboard.recruiter.index', compact('missions'));
 
     }
+    public function archived() {
+                   
+        $user = auth()->user();
+        $recruiter = Recruiter::where('user_id', $user->id)->first();
 
-    
+        $missions = Mission::where('recruiter_id', $recruiter->id)
+                    ->whereIn('status', ['filled', 'expired'])
+                    ->get();
+
+        return view('dashboard.recruiter.archived', compact('missions'));
+    }
+
+
+
+
 
 
     public function create()
@@ -144,5 +158,52 @@ class RecruiterMissionController extends Controller
 
         return view('dashboard.recruiter.show', compact('mission'));
     }
+
+    public function showCompanyInfo()
+{
+    $recruiter = auth()->user()->recruiter;
+
+    if (!$recruiter) {
+        abort(404, "Profil recruteur non trouvé.");
+    }
+
+    return view('dashboard.recruiter.company-info', compact('recruiter'));
+}
+
+public function editCompanyInfo()
+{
+    $recruiter = auth()->user()->recruiter;
+
+    if (!$recruiter) {
+        abort(404, "Profil recruteur non trouvé.");
+    }
+
+    return view('dashboard.recruiter.company-info-edit', compact('recruiter'));
+}
+
+public function updateCompanyInfo(Request $request)
+{
+    $validated = $request->validate([
+        'company_name' => ['required', 'string', 'max:255'],
+        'industry' => ['required', 'string', 'min:3', 'max:20'],
+        'website' => ['nullable', 'url', 'max:255'],
+    ], [
+        'company_name.required' => 'Le nom de l\'entreprise est obligatoire.',
+        'industry.required' => 'Le nom de l\'industrie est obligatoire.',
+        'industry.min' => 'Le nom de l\'industrie doit comporter au moins 3 caractères.',
+        'industry.max' => 'Le nom de l\'industrie ne doit pas dépasser 20 caractères.',
+        'website.url' => 'Le format de l\'URL est invalide.',
+    ]);
+
+    $recruiter = auth()->user()->recruiter;
+
+    if (!$recruiter) {
+        abort(404, "Profil recruteur non trouvé.");
+    }
+
+    $recruiter->update($validated);
+
+    return redirect()->route('recruiter.company.info')->with('success', 'Informations de l\'entreprise mises à jour avec succès.');
+}
 
 }
