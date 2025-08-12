@@ -1,30 +1,28 @@
 @extends('dashboard.layouts.app')
+
 @section('content')
     <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --gray: #6b7280;
+            --gray-light: #f3f4f6;
+        }
+
         /* Conteneur principal */
-        .conteneur {
+        .mission-container {
             max-width: 900px;
             margin: 40px auto;
-            padding: 0 20px;
+            padding: 0 30px;
+            animation: fadeIn 0.6s ease-out;
         }
 
-        /* Message flash */
-        .message-flash {
-            background-color: #e6ffed;
-            border: 1px solid #34d399;
-            color: #047857;
-            padding: 16px 24px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            text-align: center;
-            font-size: 1rem;
-            animation: apparition 0.5s ease-in-out;
-        }
-
-        @keyframes apparition {
+        @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(-15px);
+                transform: translateY(20px);
             }
 
             to {
@@ -33,198 +31,295 @@
             }
         }
 
-        /* Carte mission */
-        .carte-mission {
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        /* En-tête de page */
+        .mission-header {
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 20px;
         }
 
-        .carte-mission:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        .mission-header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            border-radius: 2px;
         }
 
-        /* En-tête de la carte */
-        .entete-mission {
-            background: linear-gradient(to right, #3b82f6, #4f46e5);
-            padding: 20px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .entete-mission h1 {
-            color: #ffffff;
-            font-size: 1.8rem;
+        .mission-title {
+            font-size: 2.2rem;
             font-weight: 700;
-            margin: 0;
+            color: var(--dark);
+            margin-bottom: 10px;
+            line-height: 1.2;
         }
 
-        .statut-mission {
-            background-color: #ffffff;
-            color: #374151;
-            padding: 8px 16px;
-            border-radius: 20px;
+        .mission-status {
+            display: inline-block;
+            background-color: var(--gray-light);
+            color: var(--dark);
+            padding: 6px 15px;
+            border-radius: 50px;
             font-size: 0.9rem;
             font-weight: 500;
             text-transform: capitalize;
         }
 
-        /* Corps de la carte en grille 2 colonnes */
-        .corps-mission {
-            padding: 30px;
+        /* Grille d'informations */
+        .mission-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 30px 40px;
-            /* 30px vertical, 40px horizontal */
+            gap: 30px;
+            margin-bottom: 50px;
         }
 
-        /* Sections informations */
-        .section-mission {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
+        .mission-section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .section-mission h2 {
-            color: #374151;
-            font-size: 1.2rem;
+        .mission-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .section-title {
+            font-size: 1.1rem;
             font-weight: 600;
-            margin: 0;
-            min-width: 120px;
-            flex-shrink: 0;
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .section-mission p {
-            color: #4b5563;
-            font-size: 1rem;
-            line-height: 1.6;
-            margin: 0;
-            flex: 1;
+        .section-title svg {
+            width: 20px;
+            height: 20px;
         }
 
-        /* Pied de carte */
-        .pied-mission {
-            background-color: #f9fafb;
-            padding: 20px 30px;
+        .section-content {
+            color: var(--dark);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        /* Description pleine largeur */
+        .mission-description {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+            margin-bottom: 40px;
+        }
+
+        /* Actions */
+        .mission-actions {
             display: flex;
             justify-content: flex-end;
             gap: 15px;
-            flex-wrap: wrap;
+            padding-top: 30px;
+            border-top: 1px solid var(--gray-light);
         }
 
-        .pied-mission a {
-            padding: 10px 20px;
+        .mission-btn {
+            padding: 12px 25px;
             border-radius: 8px;
             font-size: 1rem;
             font-weight: 500;
             text-decoration: none;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .pied-mission a.retour {
-            background-color: #d1d5db;
-            color: #1f2937;
+        .btn-back {
+            background-color: var(--gray-light);
+            color: var(--dark);
         }
 
-        .pied-mission a.retour:hover {
-            background-color: #9ca3af;
-            transform: translateY(-2px);
+        .btn-back:hover {
+            background-color: #e5e7eb;
         }
 
-        .pied-mission a.modifier {
-            background-color: #3b82f6;
-            color: #ffffff;
+        .btn-edit {
+            background-color: var(--primary);
+            color: white;
         }
 
-        .pied-mission a.modifier:hover {
-            background-color: #2563eb;
-            transform: translateY(-2px);
+        .btn-edit:hover {
+            background-color: var(--primary-light);
         }
 
-        /* Responsivité : une seule colonne sur mobile */
+        /* Message flash */
+        .alert-success {
+            background: linear-gradient(90deg, #ecfdf5, #d1fae5);
+            border-left: 4px solid #10b981;
+            color: #065f46;
+            padding: 16px 25px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .alert-success::before {
+            content: "✓";
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .conteneur {
-                margin: 20px auto;
-                padding: 0 15px;
+            .mission-container {
+                padding: 0 20px;
             }
 
-            .corps-mission {
+            .mission-grid {
                 grid-template-columns: 1fr;
-                gap: 20px;
             }
 
-            .section-mission h2 {
-                min-width: auto;
-                margin-bottom: 8px;
+            .mission-title {
+                font-size: 1.8rem;
             }
 
-            .entete-mission {
+            .mission-actions {
                 flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
             }
 
-            .entete-mission h1 {
-                font-size: 1.5rem;
-            }
-
-            .pied-mission {
+            .mission-btn {
                 justify-content: center;
             }
         }
     </style>
 
-    <div class="conteneur">
-        {{-- Message flash --}}
+    <div class="mission-container">
         @if (session('success'))
-            <div id="message-flash" class="message-flash">
+            <div class="alert-success">
                 {{ session('success') }}
             </div>
         @endif
 
-        {{-- Carte mission --}}
-        <div class="carte-mission">
-            {{-- En-tête --}}
-            <div class="entete-mission">
-                <h1>{{ $mission->title }}</h1>
-                <span class="statut-mission">{{ ucfirst($mission->status) }}</span>
-            </div>
+        <div class="mission-header">
+            <h1 class="mission-title">{{ $mission->title }}</h1>
+            <span class="mission-status">{{ ucfirst($mission->status) }}</span>
+        </div>
 
-            {{-- Corps --}}
-            <div class="corps-mission">
-                <div class="section-mission">
-                    <h2>Description</h2>
-                    <p>{{ $mission->description }}</p>
-                </div>
-
-                <div class="section-mission">
-                    <h2>Lieu</h2>
-                    <p>{{ $mission->location }}</p>
-                </div>
-
-                <div class="section-mission">
-                    <h2>Salaire</h2>
-                    <p>{{ $mission->salary_range }}</p>
-                </div>
-
-                <div class="section-mission">
-                    <h2>Date limite</h2>
-                    <p>
-                        {{ ucfirst(\Carbon\Carbon::parse($mission->deadline)->locale('fr')->isoFormat('dddd D MMMM YYYY')) }}
-                    </p>
-                </div>
-            </div>
-
-            {{-- Pied de carte --}}
-            <div class="pied-mission">
-                <a href="{{ route('recruiter.index') }}" class="retour">Retour</a>
-                <a href="{{ route('recruiter.edit', $mission->id) }}" class="modifier">Modifier</a>
+        <div class="mission-description">
+            <h2 class="section-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                Description de la mission
+            </h2>
+            <div class="section-content">
+                {{ $mission->description }}
             </div>
         </div>
+
+        <div class="mission-grid">
+            <div class="mission-section">
+                <h2 class="section-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    Lieu
+                </h2>
+                <div class="section-content">
+                    {{ $mission->location }}
+                </div>
+            </div>
+
+            <div class="mission-section">
+                <h2 class="section-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                    Salaire
+                </h2>
+                <div class="section-content">
+                    {{ $mission->salary_range }}
+                </div>
+            </div>
+
+            <div class="mission-section">
+                <h2 class="section-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    Date limite
+                </h2>
+                <div class="section-content">
+                    {{ ucfirst(\Carbon\Carbon::parse($mission->deadline)->locale('fr')->isoFormat('dddd D MMMM YYYY')) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="mission-actions">
+            <a href="{{ route('recruiter.index') }}" class="mission-btn btn-back">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Retour à la liste
+            </a>
+            <a href="{{ route('recruiter.edit', $mission->id) }}" class="mission-btn btn-edit">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                Modifier la mission
+            </a>
+        </div>
     </div>
+
+    <script>
+        // Disparition du message flash après 5 secondes
+        setTimeout(() => {
+            const alert = document.querySelector('.alert-success');
+            if (alert) {
+                alert.style.transition = 'all 0.5s ease';
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 500);
+            }
+        }, 5000);
+    </script>
 @endsection
