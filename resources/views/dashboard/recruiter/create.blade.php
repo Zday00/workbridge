@@ -1,4 +1,5 @@
 @extends('dashboard.layouts.app')
+
 @section('content')
     <style>
         body {
@@ -12,9 +13,26 @@
             padding: 24px;
         }
 
+        /* Titre avec séparation comme dans le modèle */
+        .page-header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin: 0;
+        }
+
         form {
-            background: linear-gradient(to bottom right, #eef2ff, #dbeafe);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
             border-radius: 12px;
             padding: 24px;
         }
@@ -29,16 +47,18 @@
             font-size: 12px;
         }
 
+        /* Grille du formulaire adaptée */
         .form-grid {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 24px;
             margin-bottom: 24px;
         }
 
-        @media (min-width: 768px) {
+        /* On fera description en pleine largeur, donc en dehors de la grille */
+        @media (max-width: 767px) {
             .form-grid {
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: 1fr;
             }
         }
 
@@ -64,6 +84,9 @@
             background-color: #ffffff;
             transition: border-color 0.2s, box-shadow 0.2s;
             box-sizing: border-box;
+            font-family: inherit;
+            font-size: 1rem;
+            color: #1a202c;
         }
 
         input:focus,
@@ -95,17 +118,20 @@
 
         button {
             padding: 12px 24px;
-            background-color: #4f46e5;
-            color: #ffffff;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             font-weight: 600;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: background-color 0.2s, transform 0.2s;
+            font-size: 1rem;
         }
 
         button:hover {
-            background-color: #4338ca;
+            background-color: #5a67d8;
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
         }
 
         button:focus {
@@ -162,30 +188,30 @@
     </style>
 
     <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Créer une mission</h1>
+        </div>
+
         @if (session('success'))
             <div class="alert alert-success">
                 ✅ {{ session('success') }}
             </div>
         @endif
-        <!-- Message d'erreur spécifique -->
         @if (session('error'))
             <div class="alert alert-error">
                 ❌ {{ session('error') }}
             </div>
         @endif
-
-        <!-- Indicateur de validation échouée -->
         @if (session('validation_failed'))
             <div class="alert alert-error">
                 ⚠️ La validation du formulaire a échoué. Veuillez corriger les erreurs ci-dessous.
             </div>
         @endif
 
-
         <form action="{{ route('recruiter.store') }}" method="POST" novalidate>
             @csrf
 
-            <!-- Titre et Description -->
+            <!-- Titre, Lieu, Fourchette salariale, Date limite, Statut, Catégorie en grille -->
             <div class="form-grid">
                 <div class="form-group">
                     <label for="title">Titre de la mission <span class="required">*</span></label>
@@ -195,28 +221,16 @@
                         <span class="error">🚨 {{ $message }}</span>
                     @enderror
                 </div>
-                <div class="form-group">
-                    <label for="description">Description <span class="required">*</span></label>
-                    <textarea name="description" id="description" rows="4"
-                        class="{{ $errors->has('description') ? 'error-field' : '' }}" required>{{ old('description') }}</textarea>
 
-                    @error('description')
-                        <span class="error">🚨 {{ $message }}</span>
-                    @enderror
-                </div>
-            </div>
-
-            <!-- Lieu et Fourchette salariale -->
-            <div class="form-grid">
                 <div class="form-group">
                     <label for="location">Lieu <span class="required">*</span></label>
                     <input type="text" name="location" id="location" value="{{ old('location') }}"
                         class="{{ $errors->has('location') ? 'error-field' : '' }}" required>
-
                     @error('location')
                         <span class="error">🚨 {{ $message }}</span>
                     @enderror
                 </div>
+
                 <div class="form-group">
                     <label for="salary_range">Fourchette salariale <span class="required">*</span></label>
                     <input type="text" name="salary_range" id="salary_range" value="{{ old('salary_range') }}"
@@ -226,19 +240,16 @@
                         <span class="error">🚨 {{ $message }}</span>
                     @enderror
                 </div>
-            </div>
 
-            <!-- Date limite et Statut -->
-            <div class="form-grid">
                 <div class="form-group">
                     <label for="deadline">Date limite <span class="required">*</span></label>
                     <input type="date" name="deadline" id="deadline" value="{{ old('deadline') }}"
                         class="{{ $errors->has('deadline') ? 'error-field' : '' }}" required>
-
                     @error('deadline')
                         <span class="error">🚨 {{ $message }}</span>
                     @enderror
                 </div>
+
                 <div class="form-group">
                     <label for="status">Statut de la mission <span class="required">*</span></label>
                     <select id="status" name="status" class="{{ $errors->has('status') ? 'error-field' : '' }}"
@@ -250,15 +261,11 @@
                         <option value="filled" {{ old('status') == 'filled' ? 'selected' : '' }}>Pourvue</option>
                         <option value="expired" {{ old('status') == 'expired' ? 'selected' : '' }}>Expirée</option>
                     </select>
-
                     @error('status')
                         <span class="error">🚨 {{ $message }}</span>
                     @enderror
                 </div>
-            </div>
 
-            <!-- Catégorie -->
-            <div class="form-grid">
                 <div class="form-group">
                     <label for="category_id">Catégorie <span class="required">*</span></label>
                     <select name="category_id" id="category_id"
@@ -271,11 +278,20 @@
                             </option>
                         @endforeach
                     </select>
-
                     @error('category_id')
                         <span class="error">🚨 {{ $message }}</span>
                     @enderror
                 </div>
+            </div>
+
+            <!-- Description en plein largeur en dessous -->
+            <div class="form-group" style="margin-bottom: 24px;">
+                <label for="description">Description <span class="required">*</span></label>
+                <textarea name="description" id="description" rows="5"
+                    class="{{ $errors->has('description') ? 'error-field' : '' }}" required>{{ old('description') }}</textarea>
+                @error('description')
+                    <span class="error">🚨 {{ $message }}</span>
+                @enderror
             </div>
 
             <!-- Bouton -->
@@ -285,20 +301,13 @@
         </form>
     </div>
 
-
-
-
-
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Définir la date minimum à demain
             const deadlineInput = document.getElementById('deadline');
             const tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
             deadlineInput.min = tomorrow.toISOString().split('T')[0];
 
-            // Focus sur le premier champ avec erreur
             const firstError = document.querySelector('.error-field');
             if (firstError) {
                 firstError.focus();
@@ -308,8 +317,6 @@
                 });
             }
 
-
-            // Log des informations de debug
             console.log('Debug Form Info:');
             console.log('Errors count:', {{ $errors->count() }});
             console.log('Has old input:', {{ old() ? 'true' : 'false' }});
