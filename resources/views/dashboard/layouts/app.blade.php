@@ -183,8 +183,11 @@
                                     <a href="{{ route('recruiter.create') }}" class="nav-link dropdown-link">Créer une
                                         offre</a>
                                 </li>
-                                <li class="nav-item"><a href="#" class="nav-link dropdown-link">Offres
-                                        archivées</a></li>
+                                <li class="nav-item">
+                                    <a href="{{ route('recruiter.archived') }}" class="nav-link dropdown-link">Offres
+                                        archivées</a>
+                                </li>
+
                             </ul>
                         </li>
                         <li class="nav-item">
@@ -197,21 +200,11 @@
                             </ul>
                         </li>
                         <!-- Dropdown -->
-                        <li class="nav-item dropdown-container">
-                            <a href="#" class="nav-link dropdown-toggle">
+                        <li class="nav-item">
+                            <a href="{{ route('recruiter.company.info') }}" class="nav-link">
                                 <span class="material-symbols-rounded">business</span>
                                 <span class="nav-label">Profil entreprise</span>
-                                <span class="dropdown-icon material-symbols-rounded">keyboard_arrow_down</span>
                             </a>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link dropdown-title">Profil entreprise</a></li>
-                                <li class="nav-item"><a href="#" class="nav-link dropdown-link">Informations
-                                        générales</a></li>
-                                <li class="nav-item"><a href="#" class="nav-link dropdown-link">Logo et images</a>
-                                </li>
-                                <li class="nav-item"><a href="#" class="nav-link dropdown-link">Description</a>
-                                </li>
-                            </ul>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
