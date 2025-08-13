@@ -66,3 +66,7 @@ Route::middleware('auth')->prefix('recruiter')->name('recruiter.')->group(functi
     Route::put('/company-info', [RecruiterMissionController::class, 'updateCompanyInfo'])->name('company.update');
 });
 
+Route::middleware('auth')->prefix('candidat')->name('candidat.')->group(function () {
+    Route::get('/offres', [CandidatController::class, 'index'])->name('offers.index');
+    Route::get('/offres/{mission}', [CandidatController::class, 'show'])->name('offers.show');
+});
