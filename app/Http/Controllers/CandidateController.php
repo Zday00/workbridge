@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Candidate;
-
+use App\Models\Application;
 use Illuminate\Http\Request;
 use App\Models\Mission;
 class CandidateController extends Controller
@@ -66,8 +66,57 @@ class CandidateController extends Controller
         return view('dashboard.candidate.cv');
     }
 
+    public function show(Mission $mission){
 
+         return view('dashboard.candidate.show', compact('mission'));
+    }
 
+public function createApplication(Mission $mission)
+{
+    $candidate = Candidate::where('user_id', auth()->id())->first();
+
+    // Vérifier si le candidat a déjà postulé
+    $alreadyApplied = Application::where('candidate_id', $candidate->id)
+        ->where('mission_id', $mission->id)
+        ->exists();
+
+    if ($alreadyApplied) {
+        return redirect()->route('candidate.index')
+            ->with('error', 'Vous avez déjà postulé à cette mission.');
+    }
+
+    return view('dashboard.candidate.create', compact('mission'));
+}
+
+public function storeApplication(Request $request, Mission $mission)
+{
+    $request->validate([
+        'cover_letter' => 'required|string|min:50',
+    ]);
+
+    $candidate = Candidate::where('user_id', auth()->id())->first();
+
+    if (!$candidate) {
+        return redirect()->back()->with('error', 'Profil candidat introuvable.');
+    }
+
+    // Vérifier si une candidature existe déjà
+    if (Application::where('candidate_id', $candidate->id)
+        ->where('mission_id', $mission->id)
+        ->exists()) {
+        return redirect()->back()->with('error', 'Vous avez déjà postulé à cette mission.');
+    }
+
+    Application::create([
+        'candidate_id' => $candidate->id,
+        'mission_id'   => $mission->id,
+        'cover_letter' => $request->cover_letter,
+        'status'       => 'pending',
+    ]);
+
+    return redirect()->route('candidate.index')
+        ->with('success', 'Votre candidature a été envoyée avec succès !');
+}
 
 
 
