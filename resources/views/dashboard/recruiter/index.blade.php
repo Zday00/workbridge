@@ -24,6 +24,7 @@
             margin: 0;
         }
 
+        /* Le reste de tes styles restent inchangés */
         .missions-count {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -274,6 +275,7 @@
             }
         }
     </style>
+
     @if (session('success'))
         <div class="alert-success"
             style="background-color: #d1fae5; color: #065f46; padding: 12px; border-radius: 6px; margin-bottom: 20px; text-align: center;">
@@ -282,13 +284,9 @@
     @endif
 
     <div class="missions-container">
+        <!-- TITRE + barre de séparation en haut -->
         <div class="page-header">
-            <h1 class="page-title">Mes Missions</h1>
-            @if (!$missions->isEmpty())
-                <div class="missions-count">
-                    {{ $missions->count() }} mission{{ $missions->count() > 1 ? 's' : '' }}
-                </div>
-            @endif
+            <h1 class="page-title">Informations Entreprise</h1>
         </div>
 
         @if ($missions->isEmpty())

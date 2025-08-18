@@ -51,7 +51,8 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="nav-item"><a class="nav-link dropdown-title">Recherche d'emploi</a></li>
-                                <li class="nav-item"><a href="#" class="nav-link dropdown-link">Toutes les offres</a>
+                                <li class="nav-item"><a href="{{ route('candidate.index') }}"
+                                        class="nav-link dropdown-link">Toutes les offres</a>
                                 </li>
                                 <li class="nav-item"><a href="#" class="nav-link dropdown-link">Recherche avancée</a>
                                 </li>
@@ -77,9 +78,11 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="nav-item"><a class="nav-link dropdown-title">Mon profil</a></li>
-                                <li class="nav-item"><a href="#" class="nav-link dropdown-link">Informations
+                                <li class="nav-item"><a href="{{ route('candidate.profile.update') }}"
+                                        class="nav-link dropdown-link">Informations
                                         personnelles</a></li>
-                                <li class="nav-item"><a href="#" class="nav-link dropdown-link">Mon CV</a></li>
+                                <li class="nav-item"><a href="{{ route('candidate.cv') }}"
+                                        class="nav-link dropdown-link">Mon CV</a></li>
                                 <li class="nav-item"><a href="#" class="nav-link dropdown-link">Mes compétences</a>
                                 </li>
                             </ul>
