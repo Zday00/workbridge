@@ -5,6 +5,8 @@ use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
 use App\Mail\VerificationCodeMail;
 use App\Http\Controllers\RecruiterMissionController;
+use App\Http\Controllers\CandidateController;
+
  use Illuminate\Support\Facades\Mail;
 Route::get('/', function () {
     return view('layouts.homepage');  
@@ -66,7 +68,29 @@ Route::middleware('auth')->prefix('recruiter')->name('recruiter.')->group(functi
     Route::put('/company-info', [RecruiterMissionController::class, 'updateCompanyInfo'])->name('company.update');
 });
 
-Route::middleware('auth')->prefix('candidat')->name('candidat.')->group(function () {
-    Route::get('/offres', [CandidatController::class, 'index'])->name('offers.index');
-    Route::get('/offres/{mission}', [CandidatController::class, 'show'])->name('offers.show');
+Route::middleware('auth')->prefix('candidate')->name('candidate.')->group(function () {
+    // Mes offres
+    Route::get('/offers', [CandidateController::class, 'index'])->name('index');
+    Route::get('/offers/{mission}', [CandidateController::class, 'show'])->name('show');
+
+    // Profil candidat
+    Route::get('/profile', [CandidateController::class, 'profile'])->name('profile');
+    Route::put('/profile', [CandidateController::class, 'updateProfile'])->name('profile.update');
+
+    Route::get('/cv', [CandidateController::class, 'cv'])->name('cv');
+
+    // Formulaire de candidature
+    Route::get('/offers/{mission}/apply', [CandidateController::class, 'createApplication'])->name('apply');
+
+    // Envoi du formulaire
+    Route::post('/offers/{mission}/apply', [CandidateController::class, 'storeApplication'])->name('storeApply');
+
+
+
+
+
+
+
+
+
 });
